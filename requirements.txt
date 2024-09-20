@@ -1,7 +1,7 @@
-streamlit==1.25.0
-pytorch==2.0.1
-transformers==4.31.0
-parler-tts==0.1.2
+streamlit==1.26.0
+torch==2.0.1
+transformers==4.33.3
+parler-tts==0.2.0
 soundfile==0.12.1
-numpy==1.25.2
-librosa==0.10.0.post2
+numpy==1.26.0
+librosa==0.10.1
