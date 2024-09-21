@@ -3,3 +3,5 @@ streamlit
 gTTS
 google_trans_new
 deep-translator
+PyMuPDF
+tesseract-ocr
