@@ -5,3 +5,4 @@ google_trans_new
 deep-translator
 PyMuPDF
 pytesseract
+tesseract-ocr
