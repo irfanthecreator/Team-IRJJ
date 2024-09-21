@@ -2,6 +2,9 @@ import streamlit as st
 from gtts import gTTS
 import io
 from deep_translator import GoogleTranslator
+import fitz  # PyMuPDF for PDF extraction
+import pytesseract  # Tesseract for OCR
+from PIL import Image  # To open image files
 
 # Function to convert text to speech using gTTS
 def generate_audio_gtts(translated_text, selected_language):
@@ -19,13 +22,49 @@ def translate_text(input_text, target_language):
     translated_text = GoogleTranslator(source='auto', target=target_language).translate(input_text)
     return translated_text
 
+# Function to extract text from a PDF file using PyMuPDF
+def extract_text_from_pdf(pdf_file):
+    doc = fitz.open(stream=pdf_file.read(), filetype="pdf")  # Read PDF file
+    text = ""
+    for page in doc:
+        text += page.get_text()  # Extract text from each page
+    return text
+
+# Function to extract text from an image file using Tesseract OCR
+def extract_text_from_image(image_file):
+    image = Image.open(image_file)  # Open the image file
+    text = pytesseract.image_to_string(image)  # Extract text using OCR
+    return text
+
 def main():
     # Streamlit app layout with accessibility in mind
-    st.title("📖 Text to Speech Converter for the Elderly with Language Translation")
-    st.write("*Convert your written text into speech in multiple languages.*")
+    st.title("📖 Text to Speech Converter with Language Translation and Text Extraction")
+    st.write("*Convert your written text into speech in multiple languages or extract text from PDFs and images for conversion.*")
 
-    # Input text box
-    input_text = st.text_area("Text to convert:", height=200, max_chars=1000, placeholder="Paste or type your article here...")
+    # Input method selection
+    input_option = st.radio("Choose input method:", ("Type/Paste Text", "Upload PDF", "Upload Image"))
+
+    input_text = ""
+
+    if input_option == "Type/Paste Text":
+        # Input text box
+        input_text = st.text_area("Text to convert:", height=200, max_chars=1000, placeholder="Paste or type your article here...")
+    
+    elif input_option == "Upload PDF":
+        # File uploader for PDF
+        pdf_file = st.file_uploader("Upload a PDF file", type=["pdf"])
+        if pdf_file is not None:
+            input_text = extract_text_from_pdf(pdf_file)
+            st.write("Extracted text from PDF:")
+            st.write(input_text)
+    
+    elif input_option == "Upload Image":
+        # File uploader for image
+        image_file = st.file_uploader("Upload an image file", type=["png", "jpg", "jpeg"])
+        if image_file is not None:
+            input_text = extract_text_from_image(image_file)
+            st.write("Extracted text from image:")
+            st.write(input_text)
 
     # Language selection for translation with correct language codes
     language_options = {
@@ -41,15 +80,6 @@ def main():
         'Hindi': 'hi'
     }
     selected_language = st.selectbox("Choose target language for translation:", list(language_options.keys()))
-
-    # For gTTS, voice selection is not supported in non-English languages.
-    # Simplify this part and only allow male/female selection for English.
-    if selected_language == 'English':
-        voice_options = ["Female Voice", "Male Voice"]
-        selected_voice = st.selectbox("Choose voice:", voice_options)
-    else:
-        st.write("Voice selection is not supported for this language, using default voice.")
-        selected_voice = "Default"
 
     # Convert button
     if st.button("Convert to Speech"):
@@ -69,12 +99,12 @@ def main():
             except Exception as e:
                 st.error(f"Error generating audio: {e}")
         else:
-            st.warning("Please enter some text.")
+            st.warning("Please enter or upload some text.")
 
     # Instructions for use
     st.markdown("### Instructions:")
-    st.markdown("1. Paste or type your article text in the box above.")
-    st.markdown("2. Choose your preferred voice and target language.")
+    st.markdown("1. Choose how to input text: type, upload a PDF, or upload an image.")
+    st.markdown("2. Select your target language for translation.")
     st.markdown("3. Click 'Convert to Speech' to translate and listen to the audio.")
 
     # Add team credit at the bottom of the page
