@@ -98,11 +98,32 @@ def main():
         else:
             st.warning("Please enter or upload some text.")
 
-    # Instructions for use
-    st.markdown("### Instructions:")
-    st.markdown("1. Choose how to input text: type, upload a PDF, or upload an image.")
-    st.markdown("2. Select your target language for translation.")
-    st.markdown("3. Click 'Convert to Speech' to translate and listen to the audio.")
+    # Instructions for use with larger and better-formatted text
+    st.markdown("""
+        <style>
+        .instructions {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #333;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="instructions">
+        <h2 style='text-align: center;'>Instructions</h2>
+        <ol>
+            <li><strong>Choose input method</strong>: Type/Paste Text, Upload a PDF, or Upload an Image.</li>
+            <li><strong>Select Language</strong>: Choose your preferred language for translation.</li>
+            <li><strong>Convert to Speech</strong>: Press the 'Convert to Speech' button to translate and listen to the audio.</li>
+        </ol>
+        <p style='text-align: center;'><i>Enjoy the convenience of transforming text to speech with ease!</i></p>
+    </div>
+    """, unsafe_allow_html=True)
 
     # Add team credit at the bottom of the page
     st.markdown("<br><br><center><b>MADE BY TEAM IRJJ 😝</b></center>", unsafe_allow_html=True)
