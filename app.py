@@ -1,16 +1,16 @@
 import streamlit as st
 from gtts import gTTS
-from googletrans import Translator
+from google_trans_new import google_translator
 import io
 from gtts.lang import tts_langs
 
 # Initialize translator
-translator = Translator()
+translator = google_translator()
 
 # Function to translate text to selected language
 def translate_text(input_text, target_language):
-    translated = translator.translate(input_text, dest=target_language)
-    return translated.text
+    translated = translator.translate(input_text, lang_tgt=target_language)
+    return translated
 
 # Function to convert text to speech using gTTS
 def generate_audio_gtts(translated_text, selected_language, selected_voice):
