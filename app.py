@@ -1,16 +1,22 @@
 import streamlit as st
 from gtts import gTTS
+from googletrans import Translator
 import io
 from gtts.lang import tts_langs
 
+# Initialize translator
+translator = Translator()
+
+# Function to translate text to selected language
+def translate_text(input_text, target_language):
+    translated = translator.translate(input_text, dest=target_language)
+    return translated.text
+
 # Function to convert text to speech using gTTS
-def generate_audio_gtts(input_text, selected_language, selected_voice):
+def generate_audio_gtts(translated_text, selected_language, selected_voice):
     # Voice descriptions for clarity and accessibility
     slow_speech = True  # Set speech to slow for accessibility for elderly listeners
-    if selected_voice == "Female Voice":
-        tts = gTTS(text=input_text, lang=selected_language, slow=slow_speech)
-    else:
-        tts = gTTS(text=input_text, lang=selected_language, slow=slow_speech)
+    tts = gTTS(text=translated_text, lang=selected_language, slow=slow_speech)
 
     # Save the generated audio to a buffer
     audio_buffer = io.BytesIO()
@@ -33,14 +39,21 @@ def main():
 
     # Language selection
     available_languages = tts_langs()  # Fetch available languages
-    selected_language = st.selectbox("Choose language:", list(available_languages.items()), format_func=lambda x: f"{x[1]} ({x[0]})")
+    selected_language = st.selectbox("Choose language for translation and speech:", list(available_languages.items()), format_func=lambda x: f"{x[1]} ({x[0]})")
 
     # Convert button
     if st.button("Convert to Speech"):
         if input_text:
             try:
-                # Generate audio using gTTS
-                audio_buffer = generate_audio_gtts(input_text, selected_language[0], selected_voice)
+                # Translate the text to the selected language
+                translated_text = translate_text(input_text, selected_language[0])
+
+                # Generate audio using gTTS with the translated text
+                audio_buffer = generate_audio_gtts(translated_text, selected_language[0], selected_voice)
+
+                # Display the translated text
+                st.write(f"Translated text ({selected_language[1]}): {translated_text}")
+
                 # Play audio directly from memory
                 st.audio(audio_buffer, format='audio/wav')
 
