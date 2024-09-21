@@ -7,6 +7,7 @@ from PIL import Image  # To open image files
 
 # Function to convert text to speech using gTTS
 def generate_audio_gtts(translated_text, selected_language):
+    # Speech is slow by default for better clarity for elderly users
     tts = gTTS(text=translated_text, lang=selected_language, slow=True)
     
     # Save the generated audio to a buffer
@@ -34,18 +35,18 @@ def extract_text_from_image(image_file):
     return "Image text extraction feature is not available in this environment."
 
 def main():
-    # Streamlit app layout with accessibility in mind
-    st.title("📖 Text to Speech Converter with Language Translation and PDF Text Extraction")
-    st.write("*Convert your written text into speech in multiple languages or extract text from PDFs for conversion.*")
+    # Larger font and simple title for elderly users
+    st.markdown("<h1 style='text-align: center; font-size: 42px;'>Text to Speech Converter</h1>", unsafe_allow_html=True)
+    st.write("*Convert text into speech in multiple languages with a simple interface.*")
 
-    # Input method selection
-    input_option = st.radio("Choose input method:", ("Type/Paste Text", "Upload PDF", "Upload Image"))
+    # Input method selection (larger radio buttons)
+    input_option = st.radio("Choose input method:", ("Type/Paste Text", "Upload PDF", "Upload Image"), index=0, label_visibility='visible')
 
     input_text = ""
 
     if input_option == "Type/Paste Text":
-        # Input text box
-        input_text = st.text_area("Text to convert:", height=200, max_chars=1000, placeholder="Paste or type your article here...")
+        # Input text box with larger placeholder text for readability
+        input_text = st.text_area("Text to convert:", height=200, max_chars=1000, placeholder="Paste or type your text here...", help="Enter the text you want to convert into speech.")
     
     elif input_option == "Upload PDF":
         # File uploader for PDF
@@ -56,7 +57,7 @@ def main():
             st.write(input_text)
     
     elif input_option == "Upload Image":
-        # Caution: Image to Text extraction won't work in the Streamlit Cloud environment
+        # Caution for image text extraction not supported in Streamlit environment
         st.warning("⚠️ Image text extraction (OCR) is not supported in the current Streamlit environment.")
         image_file = st.file_uploader("Upload an image file", type=["png", "jpg", "jpeg"])
         if image_file is not None:
@@ -64,7 +65,7 @@ def main():
             st.write("Extracted text from image:")
             st.write(input_text)
 
-    # Language selection for translation with correct language codes
+    # Language selection (more options for simplicity)
     language_options = {
         'English': 'en',
         'French': 'fr',
@@ -77,7 +78,7 @@ def main():
         'Italian': 'it',
         'Hindi': 'hi'
     }
-    selected_language = st.selectbox("Choose target language for translation:", list(language_options.keys()))
+    selected_language = st.selectbox("Choose target language:", list(language_options.keys()), help="Select the language you want to hear the audio in.")
 
     # Convert button
     if st.button("Convert to Speech"):
@@ -92,6 +93,7 @@ def main():
 
                 # Play audio directly from memory
                 st.audio(audio_buffer, format='audio/wav')
+                st.success(f"Translation and audio generation successful! Listening in {selected_language}.")
                 st.write(f"**Translated Text ({selected_language}):** {translated_text}")
 
             except Exception as e:
@@ -99,15 +101,16 @@ def main():
         else:
             st.warning("Please enter or upload some text.")
 
-    # Instructions for use
-    st.markdown("### Instructions:")
-    st.markdown("1. Choose how to input text: type, upload a PDF, or upload an image.")
-    st.markdown("2. **Note:** Image text extraction (OCR) is currently not supported in this environment.")
-    st.markdown("3. Select your target language for translation.")
-    st.markdown("4. Click 'Convert to Speech' to translate and listen to the audio.")
+    # Instructions with larger text and clearer explanation
+    st.markdown("<h2>Instructions:</h2>", unsafe_allow_html=True)
+    st.markdown("""
+    **1. Choose how to input text**: type, upload a PDF, or upload an image (OCR not supported).  
+    **2. Select your target language for translation**.  
+    **3. Click 'Convert to Speech'** to translate the text and listen to the audio.  
+    """, unsafe_allow_html=True)
 
-    # Add team credit at the bottom of the page
-    st.markdown("<br><br><center><b>MADE BY TEAM IRJJ 😝</b></center>", unsafe_allow_html=True)
+    # Team credit at the bottom with larger font
+    st.markdown("<center><b style='font-size: 18px;'>MADE BY TEAM IRJJ 😝</b></center>", unsafe_allow_html=True)
 
 # Entry point for the Streamlit app
 if __name__ == "__main__":
