@@ -1,33 +1,65 @@
-# Text-to-speech (TTS) with Parler-TTS and OpenVINO™
+# Text-to-Speech Converter for the Elderly
 
-Parler-TTS is a lightweight text-to-speech (TTS) model that can generate high-quality, natural sounding speech in the style of a given speaker (gender, pitch, speaking style, etc). It is a reproduction of work from the paper [Natural language guidance of high-fidelity text-to-speech with synthetic annotations](https://www.text-description-to-speech.com/) by Dan Lyth and Simon King, from Stability AI and Edinburgh University respectively.
+**Team IRJJ 😝**
 
-![](https://images.squarespace-cdn.com/content/v1/657816dfbefe0533e8a69d9a/30c96e25-acc5-4019-acdd-648da6142c4c/architecture_v3.png?format=2500w)
+## Overview
+This project is a text-to-speech (TTS) converter designed to improve accessibility for elderly individuals with declining eyesight. The application allows users to input text (such as articles, news, and documents) and convert it into clear, spoken speech, which can be played back to them. The goal is to assist the elderly in keeping up with essential information, helping them maintain their quality of life.
 
-Text-to-speech models trained on large-scale datasets have demonstrated impressive in-context learning capabilities and naturalness. However, control of speaker identity and style in these models typically requires conditioning on reference speech recordings, limiting creative applications. Alternatively, natural language prompting of speaker identity and style has demonstrated promising results and provides an intuitive method of control. However, reliance on human-labeled descriptions prevents scaling to large datasets.
+Initially, we trained the project using the **Parler-TTS** model for text-to-speech conversion, and later we optimized the model for deployment on **Streamlit**.
 
-This work bridges the gap between these two approaches. The authors propose a scalable method for labeling various aspects of speaker identity, style, and recording conditions. This method then is applied to a 45k hour dataset, which is used to train a speech language model. Furthermore, the authors propose simple methods for increasing audio fidelity, significantly outperforming recent work despite relying entirely on found data.
+## Problem Scoping using 4Ws:
 
+### Who (누구):
+The users who are facing this problem are elderly people who have difficulty reading due to declining eyesight.  
+이 문제에 직면한 사용자는 시력 저하로 인해 읽기가 어려운 노인입니다.
 
-[GitHub repository](https://github.com/huggingface/parler-tts)
+### What (무엇):
+They find it difficult to read articles, news, and important information and documents.  
+기사, 뉴스, 중요한 정보 및 문서를 읽기 어렵습니다.
 
-[HuggingFace page](https://huggingface.co/parler-tts)
+### Where (어디):
+This solution can be used in various places such as homes, libraries, and community centers. It is available as both a mobile app and a web application.  
+가정, 도서관, 커뮤니티 센터 등 다양한 장소에서 사용할 수 있으며 모바일 앱 또는 웹 애플리케이션 형태로 제공될 예정입니다.
 
+### Why (왜):
+The solution aims to enhance accessibility for the elderly, improving their understanding of important information. Reading is vital for cognitive stimulation and emotional well-being, helping users maintain social engagement and improve their quality of life.  
+이 솔루션은 노인들의 접근성을 향상시켜 중요한 정보에 대한 이해를 높이는 것을 목표로 합니다. 독서는 인지 자극과 정서적 웰빙에 필수적이며 사용자가 사회적 참여를 유지하고 삶의 질을 향상시키는 데 도움이 됩니다.
 
-## Notebook Contents
+## Parler-TTS and OpenVINO™ Integration
 
-This notebook demonstrates how to convert and run the Parler TTS model using OpenVINO.
+### What is Parler-TTS?
+**Parler-TTS** is a lightweight text-to-speech model that generates high-quality, natural-sounding speech. It allows control over speaker identity, style, and conditions, using natural language descriptions, making it ideal for creative applications.
 
-Notebook contains the following steps:
-1. Load the original model and inference.
-2. Convert the model to OpenVINO IR.
-3. Compiling models and inference.
-4. Interactive inference.
+The model was trained on a 45k-hour dataset and uses scalable methods to label various aspects of speaker identity, style, and recording conditions. This method enables the creation of a speech language model that significantly improves audio fidelity.
 
-## Installation instructions
+For more details, see the original paper [Natural language guidance of high-fidelity text-to-speech with synthetic annotations](https://www.text-description-to-speech.com/) by Dan Lyth and Simon King from Stability AI and Edinburgh University.
 
-This is a self-contained example that relies solely on its own code.</br>
-We recommend running the notebook in a virtual environment. You only need a Jupyter server to start.
-For details, please refer to [Installation Guide](../../README.md).
+![Architecture](https://images.squarespace-cdn.com/content/v1/657816dfbefe0533e8a69d9a/30c96e25-acc5-4019-acdd-648da6142c4c/architecture_v3.png?format=2500w)
 
-<img referrerpolicy="no-referrer-when-downgrade" src="https://static.scarf.sh/a.png?x-pxid=5b5a4db0-7875-4bfb-bdbd-01698b5b1a77&file=notebooks/parler-tts-text-to-speech/README.md" />
+### How Parler-TTS was used:
+Initially, we implemented **Parler-TTS** to generate the speech output in this application. Using OpenVINO™, we converted the model for more optimized, real-time inference and improved processing speeds.
+
+We chose Parler-TTS because of its flexibility and ability to control the generated speech characteristics using natural language descriptions, which allowed us to provide clear, slow, and easy-to-understand speech suitable for elderly listeners.
+
+### Steps taken:
+1. **Loading the Parler-TTS Model**: We used the pretrained **Parler-TTS** model to convert input text to speech, which we initially deployed using **Streamlit** for web and mobile applications.
+2. **OpenVINO™ Optimization**: After loading the model, we converted it to OpenVINO™ IR format for faster inference times.
+3. **Model Compilation and Inference**: After converting the model, we compiled it with OpenVINO™ and ran inference for interactive user inputs.
+4. **Final Streamlit Integration**: The application was further optimized and deployed on **Streamlit** to make it accessible via web interfaces.
+
+For more information on Parler-TTS and OpenVINO, visit:  
+- [GitHub repository](https://github.com/huggingface/parler-tts)  
+- [HuggingFace page](https://huggingface.co/parler-tts)
+
+## Features
+- Converts written text into spoken speech.
+- Two voice options: Clear, slow, and soft-spoken female voice, and calm, soothing male voice.
+- Designed specifically with elderly users in mind, providing slower and clearer speech output.
+- Fully available as a web application using Streamlit for easy deployment and usage.
+
+## Installation
+To set up this project on your local machine or for deployment, follow these steps:
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/irfanthecreator/Team-IRJJ.git
