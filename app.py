@@ -35,12 +35,22 @@ def extract_text_from_image(image_file):
     return "Image text extraction feature is not available in this environment."
 
 def main():
-    # Larger font and simple title for elderly users
-    st.markdown("<h1 style='text-align: center; font-size: 42px;'>Text to Speech Converter</h1>", unsafe_allow_html=True)
-    st.write("*Convert text into speech in multiple languages with a simple interface.*")
+    # Streamlit app layout with accessibility in mind
+    st.title("📖 Text to Speech Converter with Language Translation and PDF Text Extraction")
+    
+    # Explanation of the app's purpose for elderly users with vision problems
+    st.markdown("""
+    ### Purpose of the App:
+    This application is designed specifically for elderly users with declining eyesight, 
+    helping them convert written text into speech. By doing so, they can listen to articles, 
+    news, and other important information instead of reading it. This app aims to improve 
+    accessibility for those who may struggle with reading due to vision impairments.
+    """)
+    
+    st.write("*Convert your written text into speech in multiple languages or extract text from PDFs for conversion.*")
 
-    # Input method selection (larger radio buttons)
-    input_option = st.radio("Choose input method:", ("Type/Paste Text", "Upload PDF", "Upload Image"), index=0, label_visibility='visible')
+    # Input method selection
+    input_option = st.radio("Choose input method:", ("Type/Paste Text", "Upload PDF", "Upload Image"))
 
     input_text = ""
 
@@ -57,7 +67,7 @@ def main():
             st.write(input_text)
     
     elif input_option == "Upload Image":
-        # Caution for image text extraction not supported in Streamlit environment
+        # Caution: Image to Text extraction won't work in the Streamlit Cloud environment
         st.warning("⚠️ Image text extraction (OCR) is not supported in the current Streamlit environment.")
         image_file = st.file_uploader("Upload an image file", type=["png", "jpg", "jpeg"])
         if image_file is not None:
@@ -65,7 +75,7 @@ def main():
             st.write("Extracted text from image:")
             st.write(input_text)
 
-    # Language selection (more options for simplicity)
+    # Language selection for translation with correct language codes
     language_options = {
         'English': 'en',
         'French': 'fr',
@@ -93,7 +103,6 @@ def main():
 
                 # Play audio directly from memory
                 st.audio(audio_buffer, format='audio/wav')
-                st.success(f"Translation and audio generation successful! Listening in {selected_language}.")
                 st.write(f"**Translated Text ({selected_language}):** {translated_text}")
 
             except Exception as e:
@@ -102,12 +111,10 @@ def main():
             st.warning("Please enter or upload some text.")
 
     # Instructions with larger text and clearer explanation
-    st.markdown("<h2>Instructions:</h2>", unsafe_allow_html=True)
-    st.markdown("""
-    **1. Choose how to input text**: type, upload a PDF, or upload an image (OCR not supported).  
-    **2. Select your target language for translation**.  
-    **3. Click 'Convert to Speech'** to translate the text and listen to the audio.  
-    """, unsafe_allow_html=True)
+    st.markdown("### Instructions:")
+    st.markdown("1. Choose how to input text: type, upload a PDF, or upload an image (OCR not supported).")
+    st.markdown("2. Select your target language for translation.")
+    st.markdown("3. Click 'Convert to Speech' to translate the text and listen to the audio.")
 
     # Team credit at the bottom with larger font
     st.markdown("<center><b style='font-size: 18px;'>MADE BY TEAM IRJJ 😝</b></center>", unsafe_allow_html=True)
