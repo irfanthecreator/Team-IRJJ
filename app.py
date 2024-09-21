@@ -29,14 +29,18 @@ def main():
     # Input text box
     input_text = st.text_area("Text to convert:", height=200, max_chars=1000, placeholder="Paste or type your article here...")
 
-    # Language selection for translation
+    # Language selection for translation with correct language codes
     language_options = {
         'English': 'en',
         'French': 'fr',
         'Spanish': 'es',
         'German': 'de',
         'Korean': 'ko',
-        'Chinese (Simplified)': 'zh-cn'
+        'Chinese (Simplified)': 'zh-CN',
+        'Chinese (Traditional)': 'zh-TW',
+        'Japanese': 'ja',
+        'Italian': 'it',
+        'Hindi': 'hi'
     }
     selected_language = st.selectbox("Choose target language for translation:", list(language_options.keys()))
 
