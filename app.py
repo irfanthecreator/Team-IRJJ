@@ -40,7 +40,7 @@ def main():
     # Explanation of the app's purpose for elderly users with vision problems
     st.markdown("""
     ### 🧓👴 **Purpose of the App:**
-    This app is designed to help elderly users 👵🧓 with declining eyesight by converting text into speech 🎤🎧. 
+    This app is designed to help elderly users with declining eyesight by converting text into speech 🎤🎧. 
     Instead of reading, users can now listen 👂 to articles, news, or important documents, in different languages! 🌍
     Let's make information accessible for everyone! 
     """)
