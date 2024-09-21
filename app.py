@@ -1,21 +1,42 @@
 import streamlit as st
 from gtts import gTTS
 import io
+from langdetect import detect, LangDetectException
+from gtts.lang import tts_langs
+
+# Function to detect the language of the input text
+def detect_language(input_text):
+    try:
+        detected_lang = detect(input_text)
+        return detected_lang
+    except LangDetectException:
+        return 'en'  # Default to English if language cannot be detected
 
 # Function to convert text to speech using gTTS
 def generate_audio_gtts(input_text, selected_voice):
+    # Detect the language of the input text
+    detected_lang = detect_language(input_text)
+
+    # Fetch available languages in gTTS
+    available_langs = tts_langs()
+
+    # If the detected language is not available, default to English
+    if detected_lang not in available_langs:
+        detected_lang = 'en'
+
     # Voice descriptions for clarity and accessibility
+    slow_speech = True  # Set speech to slow for accessibility for elderly listeners
     if selected_voice == "Female Voice":
-        tts = gTTS(text=input_text, lang='en', slow=True)
+        tts = gTTS(text=input_text, lang=detected_lang, slow=slow_speech)
     else:
-        tts = gTTS(text=input_text, lang='en', slow=True)
+        tts = gTTS(text=input_text, lang=detected_lang, slow=slow_speech)
 
     # Save the generated audio to a buffer
     audio_buffer = io.BytesIO()
     tts.write_to_fp(audio_buffer)
     audio_buffer.seek(0)  # Reset buffer pointer for playback
 
-    return audio_buffer
+    return audio_buffer, detected_lang
 
 def main():
     # Streamlit app layout with accessibility in mind
@@ -34,7 +55,10 @@ def main():
         if input_text:
             try:
                 # Generate audio using gTTS
-                audio_buffer = generate_audio_gtts(input_text, selected_voice)
+                audio_buffer, detected_lang = generate_audio_gtts(input_text, selected_voice)
+                # Display detected language
+                st.info(f"Detected Language: {detected_lang.upper()}")
+
                 # Play audio directly from memory
                 st.audio(audio_buffer, format='audio/wav')
 
