@@ -55,7 +55,7 @@ def main():
             st.write("Extracted text from PDF:")
             st.write(input_text)
     
-    elif input_option == "Upload Image [NOT WORKING] ❌":
+    elif input_option == "Upload Image":
         # File uploader for image (without OCR)
         image_file = st.file_uploader("Upload an image file", type=["png", "jpg", "jpeg"])
         if image_file is not None:
