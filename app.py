@@ -8,8 +8,8 @@ import requests
 from bs4 import BeautifulSoup
 
 # Function to convert text to speech using gTTS
-def generate_audio_gtts(translated_text, selected_language):
-    tts = gTTS(text=translated_text, lang=selected_language, slow=True)
+def generate_audio_gtts(translated_text, selected_language, speech_speed):
+    tts = gTTS(text=translated_text, lang=selected_language, slow=speech_speed)
     
     # Save the generated audio to a buffer
     audio_buffer = io.BytesIO()
@@ -118,6 +118,9 @@ def main():
     }
     selected_language = st.selectbox("🌍 **Choose your target language**:", list(language_options.keys()), help="Select the language you want to hear the audio in.")
 
+    # Speech speed slider
+    speech_speed = st.slider("⏩ **Select Speech Speed**:", min_value=0.5, max_value=1.5, value=1.0, step=0.1, help="Adjust the speed of the speech (slower or faster).")
+
     # Convert button
     if st.button("🔊 **Convert to Speech**"):
         if input_text:
@@ -127,7 +130,7 @@ def main():
                 translated_text = translate_text(input_text, target_language_code)
 
                 # Generate audio using gTTS
-                audio_buffer = generate_audio_gtts(translated_text, target_language_code)
+                audio_buffer = generate_audio_gtts(translated_text, target_language_code, speech_speed < 1.0)
 
                 # Play audio directly from memory
                 st.audio(audio_buffer, format='audio/wav')
