@@ -2,3 +2,4 @@ torch==2.4.1
 streamlit
 gTTS
 google_trans_new
+deep-translator
