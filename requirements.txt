@@ -1,4 +1,1 @@
-streamlit==1.38.0
-tokenizers==0.10.3
-transformers==<specific-version>
-other-packages==<version>
+
