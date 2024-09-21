@@ -4,10 +4,8 @@ import io
 from deep_translator import GoogleTranslator
 
 # Function to convert text to speech using gTTS
-def generate_audio_gtts(translated_text, selected_voice, selected_language):
-    # Generate audio using slow speech for accessibility for elderly
-    slow_speech = True
-    tts = gTTS(text=translated_text, lang=selected_language, slow=slow_speech)
+def generate_audio_gtts(translated_text, selected_language):
+    tts = gTTS(text=translated_text, lang=selected_language, slow=True)
     
     # Save the generated audio to a buffer
     audio_buffer = io.BytesIO()
@@ -44,9 +42,14 @@ def main():
     }
     selected_language = st.selectbox("Choose target language for translation:", list(language_options.keys()))
 
-    # Voice selection
-    voice_options = ["Female Voice", "Male Voice"]
-    selected_voice = st.selectbox("Choose voice:", voice_options)
+    # For gTTS, voice selection is not supported in non-English languages.
+    # Simplify this part and only allow male/female selection for English.
+    if selected_language == 'English':
+        voice_options = ["Female Voice", "Male Voice"]
+        selected_voice = st.selectbox("Choose voice:", voice_options)
+    else:
+        st.write("Voice selection is not supported for this language, using default voice.")
+        selected_voice = "Default"
 
     # Convert button
     if st.button("Convert to Speech"):
@@ -57,7 +60,7 @@ def main():
                 translated_text = translate_text(input_text, target_language_code)
 
                 # Generate audio using gTTS
-                audio_buffer = generate_audio_gtts(translated_text, selected_voice, target_language_code)
+                audio_buffer = generate_audio_gtts(translated_text, target_language_code)
 
                 # Play audio directly from memory
                 st.audio(audio_buffer, format='audio/wav')
