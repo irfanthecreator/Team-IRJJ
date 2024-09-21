@@ -1,15 +1,4 @@
-torch==2.0.1
-# Ensure transformers and huggingface_hub are compatible with the newer torch version
-transformers==4.33.0
-huggingface_hub==0.17.3
-# Text-to-Speech package (parler-tts unavailable, replacing with alternative)
-gtts==2.2.3  # Google Text-to-Speech as an alternative
-# Updated tokenizers (ensure compatible with transformers)
+streamlit==1.38.0
 tokenizers==0.10.3
-# Other dependencies
-openai==0.27.8
-pytube==12.1.2
-requests==2.31.0
-scipy==1.11.2
-aiohttp==3.8.5
-numpy==1.25.2
+transformers==<specific-version>
+other-packages==<version>
