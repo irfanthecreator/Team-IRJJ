@@ -31,16 +31,27 @@ def extract_text_from_pdf(pdf_file):
             text += page.extract_text()  # Extract text from each page
     return text
 
-# Function to extract text from a webpage URL using BeautifulSoup
-def extract_text_from_url(url):
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    # Remove unwanted tags and extract plain text
-    return soup.get_text()
-
 # Placeholder for image processing (without OCR for now)
 def extract_text_from_image(image_file):
     return "Image text extraction feature is not available in this environment."
+
+# Function to fetch and validate text length from URL
+def fetch_text_from_url(url):
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            text = soup.get_text()
+            if len(text) > 5000:
+                st.error("The content fetched from the URL exceeds 5000 characters. Please provide a shorter article.")
+                return None
+            return text
+        else:
+            st.error("Failed to fetch content from the URL. Please check the link and try again.")
+            return None
+    except Exception as e:
+        st.error(f"Error fetching text from URL: {e}")
+        return None
 
 def main():
     # Streamlit app layout with accessibility in mind
@@ -81,17 +92,16 @@ def main():
             input_text = extract_text_from_image(image_file)
             st.write("**Extracted text from image:**")
             st.write(input_text)
-    
+
     elif input_option == "🌐 Enter URL":
-        # Text input for URL
-        url = st.text_input("🌐 **Enter a URL**", placeholder="https://example.com", help="Paste the URL of the webpage you want to extract text from.")
+        # URL input field
+        url = st.text_input("🌐 **Enter the URL of the article or document**")
         if url:
-            try:
-                input_text = extract_text_from_url(url)
-                st.write("**Extracted text from webpage:**")
-                st.write(input_text[:1000] + "...")  # Limit displayed text for brevity
-            except Exception as e:
-                st.error(f"🚨 Error extracting text from URL: {e}")
+            input_text = fetch_text_from_url(url)
+            if input_text:
+                st.write("**Extracted text from URL:**")
+                st.write(input_text)
+            st.markdown("⚠️ **Note:** If you're inputting text from a URL, ensure the content does not exceed 5000 characters. Long texts or articles may cause errors.")
 
     # Language selection for translation with correct language codes
     language_options = {
