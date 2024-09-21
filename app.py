@@ -4,6 +4,8 @@ import io
 from deep_translator import GoogleTranslator
 import pdfplumber  # Alternative PDF text extraction
 from PIL import Image  # To open image files
+import requests
+from bs4 import BeautifulSoup
 
 # Function to convert text to speech using gTTS
 def generate_audio_gtts(translated_text, selected_language):
@@ -29,6 +31,13 @@ def extract_text_from_pdf(pdf_file):
             text += page.extract_text()  # Extract text from each page
     return text
 
+# Function to extract text from a webpage URL using BeautifulSoup
+def extract_text_from_url(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    # Remove unwanted tags and extract plain text
+    return soup.get_text()
+
 # Placeholder for image processing (without OCR for now)
 def extract_text_from_image(image_file):
     return "Image text extraction feature is not available in this environment."
@@ -48,7 +57,7 @@ def main():
     st.write("*Convert your written text into speech in multiple languages, or extract text from PDFs for conversion.*")
 
     # Input method selection
-    input_option = st.radio("**Choose how you want to input your text:**", ("✍️ Type/Paste Text", "📄 Upload PDF", "📸 Upload Image"))
+    input_option = st.radio("**Choose how you want to input your text:**", ("✍️ Type/Paste Text", "📄 Upload PDF", "📸 Upload Image", "🌐 Enter URL"))
 
     input_text = ""
 
@@ -72,6 +81,17 @@ def main():
             input_text = extract_text_from_image(image_file)
             st.write("**Extracted text from image:**")
             st.write(input_text)
+    
+    elif input_option == "🌐 Enter URL":
+        # Text input for URL
+        url = st.text_input("🌐 **Enter a URL**", placeholder="https://example.com", help="Paste the URL of the webpage you want to extract text from.")
+        if url:
+            try:
+                input_text = extract_text_from_url(url)
+                st.write("**Extracted text from webpage:**")
+                st.write(input_text[:1000] + "...")  # Limit displayed text for brevity
+            except Exception as e:
+                st.error(f"🚨 Error extracting text from URL: {e}")
 
     # Language selection for translation with correct language codes
     language_options = {
@@ -110,7 +130,7 @@ def main():
 
     # Funky Instructions with emojis and clearer explanation
     st.markdown("### 📜 **Instructions:**")
-    st.markdown("1. ✍️ **Choose how to input your text:** Type, upload a PDF, or upload an image (OCR not supported).")
+    st.markdown("1. ✍️ **Choose how to input your text:** Type, upload a PDF, upload an image (OCR not supported), or enter a URL.")
     st.markdown("2. 🌍 **Select your target language** for translation.")
     st.markdown("3. 🔊 **Click 'Convert to Speech'** to translate the text and listen to the audio!")
 
