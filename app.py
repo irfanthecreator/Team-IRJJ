@@ -35,20 +35,20 @@ def extract_text_from_image(image_file):
 
 def main():
     # Streamlit app layout with accessibility in mind
-    st.title("🦄✨ **Fun & Accessible Text to Speech Converter** ✨🦄")
+    st.title("**Fun & Accessible Text to Speech Converter**")
     
     # Explanation of the app's purpose for elderly users with vision problems
     st.markdown("""
     ### 🧓👴 **Purpose of the App:**
     This app is designed to help elderly users 👵🧓 with declining eyesight by converting text into speech 🎤🎧. 
     Instead of reading, users can now listen 👂 to articles, news, or important documents, in different languages! 🌍
-    Let's make information accessible for everyone! 🎉💪
+    Let's make information accessible for everyone! 
     """)
     
-    st.write("✨ *Convert your written text into speech in multiple languages, or extract text from PDFs for conversion.* ✨")
+    st.write("*Convert your written text into speech in multiple languages, or extract text from PDFs for conversion.*")
 
     # Input method selection
-    input_option = st.radio("🔮 **Choose how you want to input your text:**", ("✍️ Type/Paste Text", "📄 Upload PDF", "📸 Upload Image"))
+    input_option = st.radio("**Choose how you want to input your text:**", ("✍️ Type/Paste Text", "📄 Upload PDF", "📸 Upload Image"))
 
     input_text = ""
 
@@ -61,7 +61,7 @@ def main():
         pdf_file = st.file_uploader("📄 **Upload a PDF file**", type=["pdf"])
         if pdf_file is not None:
             input_text = extract_text_from_pdf(pdf_file)
-            st.write("✨ **Extracted text from PDF:**")
+            st.write("**Extracted text from PDF:**")
             st.write(input_text)
     
     elif input_option == "📸 Upload Image":
@@ -70,7 +70,7 @@ def main():
         image_file = st.file_uploader("📸 **Upload an image file**", type=["png", "jpg", "jpeg"])
         if image_file is not None:
             input_text = extract_text_from_image(image_file)
-            st.write("✨ **Extracted text from image:**")
+            st.write("**Extracted text from image:**")
             st.write(input_text)
 
     # Language selection for translation with correct language codes
@@ -89,7 +89,7 @@ def main():
     selected_language = st.selectbox("🌍 **Choose your target language**:", list(language_options.keys()), help="Select the language you want to hear the audio in.")
 
     # Convert button
-    if st.button("🎶 **Convert to Speech**"):
+    if st.button("🔊 **Convert to Speech**"):
         if input_text:
             try:
                 # Translate the text to the selected language
@@ -112,10 +112,10 @@ def main():
     st.markdown("### 📜 **Instructions:**")
     st.markdown("1. ✍️ **Choose how to input your text:** Type, upload a PDF, or upload an image (OCR not supported).")
     st.markdown("2. 🌍 **Select your target language** for translation.")
-    st.markdown("3. 🎶 **Click 'Convert to Speech'** to translate the text and listen to the audio!")
+    st.markdown("3. 🔊 **Click 'Convert to Speech'** to translate the text and listen to the audio!")
 
     # Fun footer with team credit
-    st.markdown("<br><br><center><b style='font-size: 22px;'>🎉✨ MADE WITH ❤️ BY TEAM IRJJ 😝✨</b></center>", unsafe_allow_html=True)
+    st.markdown("<br><br><center><b style='font-size: 22px;'>MADE BY TEAM IRJJ :flag-kr: :flag-sg:</b></center>", unsafe_allow_html=True)
 
 # Entry point for the Streamlit app
 if __name__ == "__main__":
