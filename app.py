@@ -2,8 +2,7 @@ import streamlit as st
 from gtts import gTTS
 import io
 from deep_translator import GoogleTranslator
-import fitz  # PyMuPDF for PDF extraction
-import pytesseract  # Tesseract for OCR
+import pdfplumber  # Alternative PDF text extraction
 from PIL import Image  # To open image files
 
 # Function to convert text to speech using gTTS
@@ -22,24 +21,22 @@ def translate_text(input_text, target_language):
     translated_text = GoogleTranslator(source='auto', target=target_language).translate(input_text)
     return translated_text
 
-# Function to extract text from a PDF file using PyMuPDF
+# Function to extract text from a PDF file using pdfplumber
 def extract_text_from_pdf(pdf_file):
-    doc = fitz.open(stream=pdf_file.read(), filetype="pdf")  # Read PDF file
-    text = ""
-    for page in doc:
-        text += page.get_text()  # Extract text from each page
+    with pdfplumber.open(pdf_file) as pdf:
+        text = ""
+        for page in pdf.pages:
+            text += page.extract_text()  # Extract text from each page
     return text
 
-# Function to extract text from an image file using Tesseract OCR
+# Placeholder for image processing (without OCR for now)
 def extract_text_from_image(image_file):
-    image = Image.open(image_file)  # Open the image file
-    text = pytesseract.image_to_string(image)  # Extract text using OCR
-    return text
+    return "Image text extraction feature is not available in this environment."
 
 def main():
     # Streamlit app layout with accessibility in mind
-    st.title("📖 Text to Speech Converter with Language Translation and Text Extraction")
-    st.write("*Convert your written text into speech in multiple languages or extract text from PDFs and images for conversion.*")
+    st.title("📖 Text to Speech Converter with Language Translation and PDF Text Extraction")
+    st.write("*Convert your written text into speech in multiple languages or extract text from PDFs for conversion.*")
 
     # Input method selection
     input_option = st.radio("Choose input method:", ("Type/Paste Text", "Upload PDF", "Upload Image"))
@@ -59,7 +56,7 @@ def main():
             st.write(input_text)
     
     elif input_option == "Upload Image":
-        # File uploader for image
+        # File uploader for image (without OCR)
         image_file = st.file_uploader("Upload an image file", type=["png", "jpg", "jpeg"])
         if image_file is not None:
             input_text = extract_text_from_image(image_file)
