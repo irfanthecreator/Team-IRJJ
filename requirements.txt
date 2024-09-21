@@ -7,3 +7,5 @@ PyMuPDF
 pytesseract
 pdfplumber
 Pillow
+requests
+beautifulsoup4
