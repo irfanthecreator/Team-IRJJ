@@ -1,2 +1,2 @@
 torch==2.4.1
-parler_tts==0.2
+git+https://github.com/username/parler_tts.git
