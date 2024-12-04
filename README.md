@@ -2,6 +2,8 @@
 
 **Team IRJJ 😝**
 
+Team website: https://sites.google.com/yanggok.hs.kr/teamirjj/home-%ED%99%88
+
 Link: https://team-irjj.streamlit.app/
 
 ## Overview
